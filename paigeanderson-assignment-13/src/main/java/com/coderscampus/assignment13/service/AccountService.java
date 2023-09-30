@@ -15,8 +15,8 @@ public class AccountService {
 	private AccountRepository accountRepo;
 	
 	public Account findAccountById(Long accountId) {
-		Optional<Account> userId = accountRepo.findById(accountId);
-		return userId.orElse(new Account());
+		Optional<Account> account = accountRepo.findById(accountId);
+		return account.orElse(new Account());
 	}
 	
 	public void saveAccount(Account account) {

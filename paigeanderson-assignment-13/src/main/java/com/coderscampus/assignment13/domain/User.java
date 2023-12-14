@@ -59,10 +59,10 @@ public class User {
 	public void setCreatedDate(LocalDate createdDate) {
 		this.createdDate = createdDate;
 	}
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	@JoinTable(name = "user_account",
-	           joinColumns = @JoinColumn(name = "user_id"), 
-	           inverseJoinColumns = @JoinColumn(name = "account_id"))
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_account", joinColumns = @JoinColumn(name = "user_id"),
+	inverseJoinColumns = @JoinColumn(name = "account_id"))
 	public List<Account> getAccounts() {
 		return accounts;
 	}
@@ -70,7 +70,7 @@ public class User {
 		this.accounts = accounts;
 	}
 	@OneToOne(mappedBy = "user", 
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
 			orphanRemoval = true)
 	public Address getAddress() {
 		return address;

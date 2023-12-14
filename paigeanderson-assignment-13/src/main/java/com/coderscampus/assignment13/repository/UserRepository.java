@@ -31,4 +31,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 		+ " left join fetch u.accounts"
 		+ " left join fetch u.address")
 	Set<User> findAllUsersWithAccountsAndAddresses();
+
 }

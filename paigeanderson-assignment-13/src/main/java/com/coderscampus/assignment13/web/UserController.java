@@ -7,15 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.coderscampus.assignment13.domain.Address;
-//import com.coderscampus.assignment13.domain.Address;
 import com.coderscampus.assignment13.domain.User;
 import com.coderscampus.assignment13.service.UserService;
-
 
 @Controller
 public class UserController {
@@ -56,17 +52,15 @@ public class UserController {
 	}
 	
 	@PostMapping("/users/{userId}")
-	public String postOneUser (@PathVariable Long userId, User user, Address address) {
+	public String postOneUser (User user, @PathVariable Long userId) {
 		userService.saveUser(user);
-		userService.updateUser(user, address);
 		return "redirect:/users/"+user.getUserId();
 	}
 	
-	
 	@PostMapping("/users/{userId}/delete")
 	public String deleteOneUser (@PathVariable Long userId) {
+		System.out.println(userId);
 		userService.delete(userId);
 		return "redirect:/users";
 	}
-	
 }

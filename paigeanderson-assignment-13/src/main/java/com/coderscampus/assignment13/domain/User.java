@@ -60,7 +60,7 @@ public class User {
 		this.createdDate = createdDate;
 	}
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "user_account", joinColumns = @JoinColumn(name = "user_id"),
 	inverseJoinColumns = @JoinColumn(name = "account_id"))
 	public List<Account> getAccounts() {
@@ -70,7 +70,7 @@ public class User {
 		this.accounts = accounts;
 	}
 	@OneToOne(mappedBy = "user", 
-			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+			cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	public Address getAddress() {
 		return address;

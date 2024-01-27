@@ -68,41 +68,22 @@ public class UserService {
 			accountRepo.save(checking);
 			accountRepo.save(savings);
 		}
-		if(user.getAddress() == null) {
+		if (user.getAddress() == null) {
 			Address address = new Address();
+			
 			user.setAddress(address);
-			user.getAddress().setUserId(user.getUserId());
+			address.setUser(user);
+			addressRepo.save(address);
 		}
-		if(user.getAddress().getUser() == null) {
+		if (user.getAddress().getUser() == null) {
 			user.getAddress().setUser(user);
 			user.getAddress().setUserId(user.getUserId());
-			
 		}
 		return userRepo.save(user);
 	}
 
 	public void delete(Long userId) {
-		userRepo.deleteById(userId);
-	}
-	
-	public void updateUser(User user, Address address) {
-		User existingUser = userRepo.findById(user.getUserId()).orElse(null);
-		Address existingAddress = addressRepo.findById(user.getUserId()).orElse(null);
-		
-		if (existingUser != null && existingAddress != null) {
-			existingUser.setUsername(existingUser.getUsername());
-			existingUser.setPassword(existingUser.getPassword());
-			existingUser.setName(existingUser.getName());
-			
-			existingAddress.setAddressLine1(existingAddress.getAddressLine1());
-			existingAddress.setAddressLine2(existingAddress.getAddressLine2());
-			existingAddress.setCity(existingAddress.getCity());
-			existingAddress.setRegion(existingAddress.getRegion());
-			existingAddress.setCountry(existingAddress.getCountry());
-			existingAddress.setZipCode(existingAddress.getZipCode());
-			
-			userRepo.save(existingUser);
-			addressRepo.save(existingAddress);
-		}
+		Optional<User> user = userRepo.findById(userId);
+		userRepo.delete(user.get());
 	}
 }

@@ -48,13 +48,19 @@ public class UserController {
 		User user = userService.findById(userId);
 		model.put("users", Arrays.asList(user));
 		model.put("user", user);
+		model.put("address", user.getAddress());
+		model.put("accounts", user.getAccounts());
+		
 		return "users";
 	}
 	
 	@PostMapping("/users/{userId}")
-	public String postOneUser (User user, @PathVariable Long userId) {
+	public String postOneUser (@PathVariable Long userId, User user) {
+		user.getAddress().setUserId(userId);
+		user.getAddress().setUser(user);
 		userService.saveUser(user);
-		return "redirect:/users/"+user.getUserId();
+		
+		return "redirect:/users/" + user.getUserId();
 	}
 	
 	@PostMapping("/users/{userId}/delete")

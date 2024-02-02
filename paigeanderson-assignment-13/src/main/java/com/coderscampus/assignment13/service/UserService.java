@@ -55,7 +55,7 @@ public class UserService {
 	}
 
 	public User saveUser(User user) {
-		if (user.getUserId() == null) {
+		if (user.getUserId() == null ) {
 			Account checking = new Account();
 			checking.setAccountName("Checking Account");
 			checking.getUsers().add(user);
@@ -79,11 +79,27 @@ public class UserService {
 			user.getAddress().setUser(user);
 			user.getAddress().setUserId(user.getUserId());
 		}
+		
+		Optional<User> existingUser = userRepo.findById(user.getUserId());
+		List<Account> userAccounts = existingUser.get().getAccounts();
+		user.setAccounts(userAccounts);
+		
+		if(existingUser.isPresent()) {
+			if(user.getPassword().isEmpty()) {
+				user.setPassword(existingUser.get().getPassword());
+			}
+		}
+		
 		return userRepo.save(user);
 	}
 
 	public void delete(Long userId) {
-		Optional<User> user = userRepo.findById(userId);
-		userRepo.delete(user.get());
+		userRepo.deleteById(userId);
+	}
+	
+	public void addNewUserAccount(Account account, User user){
+		Integer accountId = user.getAccounts().size() + 1;
+		String accountName = "Account #: " + accountId;
+		account.setAccountName(accountName);
 	}
 }
